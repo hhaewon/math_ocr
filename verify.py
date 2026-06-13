@@ -45,8 +45,8 @@ SYMBOL_MAP = {
 }
 
 # 새로 학습된 베스트 모델 로드
-model = keras.models.load_model("math_model_best.keras")
-print("✅ 성공: math_model_best.keras 파일 로드 완료")
+model = keras.models.load_model("math_model.keras")
+print("✅ 성공: math_model.keras 파일 로드 완료")
 
 input_shape = model.input_shape
 IMG_SIZE = input_shape[1] if input_shape[1] is not None else 32
@@ -61,7 +61,7 @@ def preprocess_image(img):
     if np.mean(corners) < 127:
         arr = 255.0 - arr
 
-    # 2. [급진적 처방] 오츠 이진화 강제 적용 (순수 흑백 고정)
+    # 2. 오츠 이진화  적용 (순수 흑백 고정)
     arr_uint8 = np.clip(arr, 0, 255).astype(np.uint8)
     _, thresh = cv2.threshold(arr_uint8, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
@@ -209,7 +209,7 @@ def verify_equation(symbols):
     try:
         left_val = eval(left_expr)
         right_val = eval(right_expr)
-        print(f"\n[수식 연산 결과]")
+        print("\n[수식 연산 결과]")
         print(f"  좌변: {left_expr} = {left_val}")
         print(f"  우변: {right_expr} = {right_val}")
         if abs(left_val - right_val) < 1e-7:

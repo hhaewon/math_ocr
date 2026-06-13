@@ -6,8 +6,9 @@ from PIL import Image
 from sklearn.model_selection import train_test_split
 from tensorflow import keras
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
+import matplotlib.pyplot as plt
 
-# [수정] 두 가지 경로를 모두 정의합니다.
+# 데이터셋 경로 및 클래스 정의
 TRAIN_PATH = r"C:\Users\haewon\Desktop\Coding\math_ocr\archive\train"
 EVAL_PATH = r"C:\Users\haewon\Desktop\Coding\math_ocr\archive\eval"
 
@@ -69,7 +70,7 @@ def preprocess_image(img):
     return np.array(final_img).astype(np.float32)
 
 
-# [수정] 특정 경로를 인자로 받아 로딩하도록 변경
+# 데이터 로딩 함수
 def load_data(data_path):
     images, labels = [], []
     for label in CLASSES:
@@ -115,7 +116,7 @@ y_eval_enc = np.array([CLASSES.index(label) for label in y_eval_raw])
 y_eval_cat = keras.utils.to_categorical(y_eval_enc, num_classes=len(CLASSES))
 
 
-# 고성능 CNN 레이어
+# CNN 모델 정의
 model = keras.Sequential(
     [
         keras.layers.Input(shape=(IMG_SIZE, IMG_SIZE, 1)),
@@ -163,15 +164,43 @@ callbacks = [
 ]
 
 print("학습 시작...")
-model.fit(
+history = model.fit(
     datagen.flow(X_train, y_train, batch_size=32),
     epochs=40,
     validation_data=(X_val, y_val),  # train에서 쪼갠 20%로 중간 검증
     callbacks=callbacks,
 )
 
-model.save("math_model_best.keras")
-print("✅ 최고 성능 모델 저장 완료 (math_model_best.keras)")
+model.save("math_model.keras")
+print("✅ 모델 저장 완료 (math_model.keras)")
+
+# --- 시각화 자료 생성 (발표용) ---
+print("\n📊 발표용 시각화 자료 생성 중...")
+plt.figure(figsize=(12, 5))
+
+# 1. Accuracy 그래프
+plt.subplot(1, 2, 1)
+plt.plot(history.history['accuracy'], label='Training Accuracy', color='#1f77b4', linewidth=2)
+plt.plot(history.history['val_accuracy'], label='Validation Accuracy', color='#ff7f0e', linewidth=2)
+plt.title('Model Accuracy', fontsize=14)
+plt.xlabel('Epoch', fontsize=12)
+plt.ylabel('Accuracy', fontsize=12)
+plt.legend(loc='lower right')
+plt.grid(True, linestyle='--', alpha=0.7)
+
+# 2. Loss 그래프
+plt.subplot(1, 2, 2)
+plt.plot(history.history['loss'], label='Training Loss', color='#1f77b4', linewidth=2)
+plt.plot(history.history['val_loss'], label='Validation Loss', color='#ff7f0e', linewidth=2)
+plt.title('Model Loss', fontsize=14)
+plt.xlabel('Epoch', fontsize=12)
+plt.ylabel('Loss', fontsize=12)
+plt.legend(loc='upper right')
+plt.grid(True, linestyle='--', alpha=0.7)
+
+plt.tight_layout()
+plt.savefig('learning_curves.png', dpi=300) # 고해상도로 저장
+print("✅ 발표용 그래프 저장 완료: learning_curves.png")
 
 # 📌 [추가] 3. 완전히 격리된 Eval 데이터셋으로 진짜 최종 실력 평가
 print("\n📢 [최종 검증] 한 번도 보지 못한 Eval 데이터셋으로 정확도 측정...")

@@ -10,10 +10,9 @@ EXTENSIONS = ["*.jpg", "*.png", "*.jpeg"]
 
 
 def main():
-    # 1. 이미지 파일 리스트 확보 (하위 폴더 포함)
+    # 이미지 파일 리스트 확보
     image_files = []
     for ext in EXTENSIONS:
-        # recursive=True를 사용하여 하위 폴더까지 탐색
         image_files.extend(
             glob.glob(os.path.join(TARGET_DIR, "**", ext), recursive=True)
         )
