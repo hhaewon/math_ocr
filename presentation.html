@@ -205,7 +205,7 @@
                     <li><span class="highlight">해결책:</span> 손글씨 수식 이미지를 입력하면 <b>자동으로 참/거짓 여부를 판정</b>해 주는 AI 프로그램 개발</li>
                 </ul>
                 <div class="img-box">
-                    <img src="equation_images\image10.jpg" alt="입력 데이터 예시">
+                    <img src="./ppt_resources/example_equation/equation.jpg" alt="입력 데이터 예시">
                     <p style="text-align: center; font-size: 1.2rem; color: #5f6368;">[예시: 손글씨 수식 입력 이미지]</p>
                 </div>
             </div>
@@ -243,7 +243,7 @@
                         </ul>
                     </div>
                     <div class="img-box">
-                        <img src="model_image.png" alt="클래스 및 모델 관련 이미지">
+                        <img src="./ppt_resources/model_image.png" alt="클래스 및 모델 관련 이미지">
                     </div>
                 </div>
             </div>
@@ -298,7 +298,7 @@
                         </ul>
                     </div>
                     <div class="img-box">
-                        <img src="data augmentation.png" alt="데이터 전처리 결과 또는 증강 예시">
+                        <img src="./ppt_resources/data_augmentation.png" alt="데이터 전처리 결과 또는 증강 예시">
                     </div>
                 </div>
             </div>
@@ -336,22 +336,29 @@
             </div>
         </div>
 
-        <div class="slide">
+        <<div class="slide">
             <div class="slide-content">
                 <h2>5. 모델의 추론: 전체 동작 흐름</h2>
-                <ul>
-                    <li>입력: 사용자가 작성한 <b>1장의 수식 전체 이미지</b></li>
-                    <li><b>Two-Stage 출력 과정:</b>
-                        <ol>
-                            <li><span class="highlight">기호 분류 (1단계):</span> $[3, +, 8, =, 1, 1]$ 형태로 각 객체 인식</li>
-                            <li><span class="highlight">계산 검증 (2단계):</span> "✅ 맞아요" 또는 "❌ 틀렸어요" 반환</li>
-                        </ol>
-                    </li>
-                    <li>CNN 모델은 각 문자 이미지를 클래스명으로 1차 분류한 뒤, 이를 실제 연산 가능한 문자열 데이터로 매핑</li>
-                </ul>
+                <div class="grid-2">
+                    <div>
+                        <ul>
+                            <li>입력: 사용자가 작성한 <b>1장의 수식 전체 이미지</b></li>
+                            <li><b>Two-Stage 출력 과정:</b>
+                                <ol style="margin-top: 10px;">
+                                    <li style="margin-bottom: 10px;"><span class="highlight">기호 분류 (1단계):</span> $[3, +, 8, =, 1, 1]$ 형태로 각 객체 인식</li>
+                                    <li><span class="highlight">계산 검증 (2단계):</span> "✅ 맞아요" 또는 "❌ 틀렸어요" 반환</li>
+                                </ol>
+                            </li>
+                            <li style="margin-top: 15px;">CNN 모델은 각 문자 이미지를 클래스명으로 1차 분류한 뒤, 이를 실제 연산 가능한 문자열 데이터로 매핑</li>
+                        </ul>
+                    </div>
+                    <div class="img-box">
+                        <img src="./ppt_resources/inference_process.png" alt="추론 과정 동작 흐름도" style="border: 2px dashed #1a73e8; padding: 10px; background-color: #ffffff;">
+                        <p style="text-align: center; font-size: 1.1rem; color: #5f6368; margin-top: 10px; font-weight: 500;">[그림] 인공지능 수식 검증 전체 파이프라인</p>
+                    </div>
+                </div>
             </div>
         </div>
-
         <div class="slide">
             <div class="slide-content">
                 <h2>5. 문자 분할 (Segmentation) 알고리즘</h2>
@@ -369,27 +376,27 @@
                     <div class="img-box">
                         <div style="display: flex; justify-content: center; align-items: center; gap: 15px; background: #ffffff; padding: 20px; border-radius: 12px; box-shadow: inset 0 2px 8px rgba(0,0,0,0.08);">
                             <div style="text-align: center;">
-                                <img src="debug_chars/char_0_input.png" alt="3" style="height: 100px; width: auto; object-fit: contain; border: 2px dashed #1a73e8; padding: 5px; background-color: #f8f9fa;">
+                                <img src="./ppt_resources/example_equation/char_0_input.png" alt="3" style="height: 100px; width: auto; object-fit: contain; border: 2px dashed #1a73e8; padding: 5px; background-color: #f8f9fa;">
                                 <div style="margin-top: 10px; font-weight: 700; color: #1a73e8; font-size: 1.4rem;">3</div>
                             </div>
                             <div style="text-align: center;">
-                                <img src="debug_chars/char_1_input.png" alt="+" style="height: 100px; width: auto; object-fit: contain; border: 2px dashed #1a73e8; padding: 5px; background-color: #f8f9fa;">
+                                <img src="./ppt_resources/example_equation/char_1_input.png" alt="+" style="height: 100px; width: auto; object-fit: contain; border: 2px dashed #1a73e8; padding: 5px; background-color: #f8f9fa;">
                                 <div style="margin-top: 10px; font-weight: 700; color: #1a73e8; font-size: 1.4rem;">+</div>
                             </div>
                             <div style="text-align: center;">
-                                <img src="debug_chars/char_2_input.png" alt="8" style="height: 100px; width: auto; object-fit: contain; border: 2px dashed #1a73e8; padding: 5px; background-color: #f8f9fa;">
+                                <img src="./ppt_resources/example_equation/char_2_input.png" alt="8" style="height: 100px; width: auto; object-fit: contain; border: 2px dashed #1a73e8; padding: 5px; background-color: #f8f9fa;">
                                 <div style="margin-top: 10px; font-weight: 700; color: #1a73e8; font-size: 1.4rem;">8</div>
                             </div>
                             <div style="text-align: center;">
-                                <img src="debug_chars/char_3_input.png" alt="=" style="height: 100px; width: auto; object-fit: contain; border: 2px dashed #1a73e8; padding: 5px; background-color: #f8f9fa;">
+                                <img src="./ppt_resources/example_equation/char_3_input.png" alt="=" style="height: 100px; width: auto; object-fit: contain; border: 2px dashed #1a73e8; padding: 5px; background-color: #f8f9fa;">
                                 <div style="margin-top: 10px; font-weight: 700; color: #1a73e8; font-size: 1.4rem;">=</div>
                             </div>
                             <div style="text-align: center;">
-                                <img src="debug_chars/char_4_input.png" alt="1" style="height: 100px; width: auto; object-fit: contain; border: 2px dashed #1a73e8; padding: 5px; background-color: #f8f9fa;">
+                                <img src="./ppt_resources/example_equation/char_4_input.png" alt="1" style="height: 100px; width: auto; object-fit: contain; border: 2px dashed #1a73e8; padding: 5px; background-color: #f8f9fa;">
                                 <div style="margin-top: 10px; font-weight: 700; color: #1a73e8; font-size: 1.4rem;">1</div>
                             </div>
                             <div style="text-align: center;">
-                                <img src="debug_chars/char_5_input.png" alt="1" style="height: 100px; width: auto; object-fit: contain; border: 2px dashed #1a73e8; padding: 5px; background-color: #f8f9fa;">
+                                <img src="./ppt_resources/example_equation/char_5_input.png" alt="1" style="height: 100px; width: auto; object-fit: contain; border: 2px dashed #1a73e8; padding: 5px; background-color: #f8f9fa;">
                                 <div style="margin-top: 10px; font-weight: 700; color: #1a73e8; font-size: 1.4rem;">1</div>
                             </div>
                         </div>
@@ -431,7 +438,7 @@
                         </ul>
                     </div>
                     <div class="img-box">
-                        <img src="learning_curves.jpg" alt="Model Accuracy and Loss Learning Curves">
+                        <img src="./ppt_resources/learning_curves.png" alt="Model Accuracy and Loss Learning Curves">
                         <p style="text-align: center; font-size: 1.1rem; margin-top:5px;">[모델 학습 곡선 - Accuracy / Loss]</p>
                     </div>
                 </div>
@@ -469,6 +476,7 @@
                     <li>클래스당 500장이라는 많지 않은 데이터에도 불구하고 처음 보는 손글씨를 정확히 추론해 내는 <span class="blue-highlight">딥러닝의 강력한 일반화 능력</span>에 깊은 인상을 받음</li>
                     <li>양질의 데이터셋 구축과 목적에 맞는 아키텍처 설계의 중요성 인식</li>
                     <li><b>Next Step:</b> 시간 관계상 시도하지 못한 "기하 문제 3D 모델링 AI", "함수식 도출 AI" 등 고난도 과제에 도전할 수 있는 강력한 동기부여가 됨</li>
+                    <li style="margin-top:20px; font-size: 1.4rem;">💻 GitHub Repository: <a href="https://github.com/hhaewon/math_ocr" target="_blank">https://github.com/hhaewon/math_ocr</a></li>
                 </ul>
             </div>
         </div>

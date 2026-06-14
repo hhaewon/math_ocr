@@ -44,7 +44,6 @@ SYMBOL_MAP = {
     "decimal": ".",
 }
 
-# 새로 학습된 베스트 모델 로드
 model = keras.models.load_model("math_model.keras")
 print("✅ 성공: math_model.keras 파일 로드 완료")
 
@@ -183,43 +182,77 @@ def segment_characters(img_path):
     return char_imgs
 
 
-def verify_equation(symbols):
+def get_verification_result(symbols):
     clean_symbols = [s for s in symbols if s is not None]
 
-    idx = 0
-    while idx < len(clean_symbols) - 1:
-        if clean_symbols[idx] == "=" and clean_symbols[idx + 1] == "=":
-            clean_symbols.pop(idx + 1)
-        else:
-            idx += 1
+    equation_str = " ".join(str(s) for s in clean_symbols)
 
-    print(f"\n📢 [최종 기호 리스트]: {clean_symbols}")
+    result = {
+        "equation": equation_str,
+        "status": "unknown",
+        "message": "",
+        "left": "",
+        "right": "",
+        "left_val": None,
+        "right_val": None,
+    }
 
     if "=" not in clean_symbols:
-        print("❌ 등호(=)가 인식되지 않았습니다.")
-        return
+        result["status"] = "error"
+        result["message"] = "등호(=)가 인식되지 않았습니다."
+        return result
 
     eq_idx = clean_symbols.index("=")
     left = clean_symbols[:eq_idx]
     right = clean_symbols[eq_idx + 1 :]
 
+    if not left or not right:
+        result["status"] = "error"
+        result["message"] = "수식이 불완전합니다."
+        return result
+
     left_expr = "".join(str(s) for s in left)
     right_expr = "".join(str(s) for s in right)
+
+    result["left"] = left_expr
+    result["right"] = right_expr
 
     try:
         left_val = eval(left_expr)
         right_val = eval(right_expr)
-        print("\n[수식 연산 결과]")
-        print(f"  좌변: {left_expr} = {left_val}")
-        print(f"  우변: {right_expr} = {right_val}")
+        result["left_val"] = left_val
+        result["right_val"] = right_val
+
         if abs(left_val - right_val) < 1e-7:
-            print("  ✅ 수식이 완벽히 성립합니다!")
+            result["status"] = "success"
+            result["message"] = "참 (TRUE)"
         else:
-            print(f"  ❌ 틀린 수식입니다! ({left_val} ≠ {right_val})")
+            result["status"] = "fail"
+            result["message"] = f"거짓 (FALSE) ({left_val} ≠ {right_val})"
     except Exception as e:
-        print(
-            f"  ❌ 계산 오류: {e} (생성된 식 내부 구조 확인 필요: {left_expr} = {right_expr})"
-        )
+        result["status"] = "error"
+        result["message"] = f"계산 오류: {str(e)}"
+
+    return result
+
+
+def verify_equation(symbols):
+    res = get_verification_result(symbols)
+
+    print(f"\n📢 [최종 기호 리스트]: {res['equation']}")
+
+    if res["status"] == "error":
+        print(f"❌ {res['message']}")
+        return
+
+    print("\n[수식 연산 결과]")
+    print(f"  좌변: {res['left']} = {res['left_val']}")
+    print(f"  우변: {res['right']} = {res['right_val']}")
+
+    if res["status"] == "success":
+        print(f"  ✅ {res['message']}!")
+    else:
+        print(f"  ❌ {res['message']}!")
 
 
 if __name__ == "__main__":

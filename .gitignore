@@ -2,8 +2,5 @@ debug_chars/
 __pycache__/
 *.h5
 *.keras
-learning_curves.png
-debug_char_*.png
-
-발표자료.pdf
-AI 프로젝트 보고서(2109 신해원).hwpx
+ppt_resources/
+uploads/
