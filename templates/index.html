@@ -164,17 +164,37 @@
         uploadArea.ondragover = (e) => {
             e.preventDefault();
             uploadArea.style.borderColor = '#0d6efd';
+            uploadArea.style.backgroundColor = '#f0f7ff';
         };
 
         uploadArea.ondragleave = () => {
             uploadArea.style.borderColor = '#dee2e6';
+            uploadArea.style.backgroundColor = '#fff';
         };
 
         uploadArea.ondrop = (e) => {
             e.preventDefault();
+            uploadArea.style.borderColor = '#dee2e6';
+            uploadArea.style.backgroundColor = '#fff';
             const file = e.dataTransfer.files[0];
-            if (file) handleUpload(file);
+            if (file && file.type.startsWith('image/')) {
+                handleUpload(file);
+            }
         };
+
+        // 복사 붙여넣기 기능 추가
+        window.addEventListener('paste', (e) => {
+            const items = e.clipboardData.items;
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf('image') !== -1) {
+                    const blob = items[i].getAsFile();
+                    // 파일명 임의 생성
+                    const file = new File([blob], "pasted_image.png", { type: "image/png" });
+                    handleUpload(file);
+                    break;
+                }
+            }
+        });
 
         async function handleUpload(file) {
             loading.style.display = 'block';

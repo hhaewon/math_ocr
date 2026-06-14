@@ -32,8 +32,10 @@ def predict():
     if file.filename == '':
         return jsonify({'error': 'No image selected'}), 400
     
-    # 이미지 저장
-    file_path = os.path.join(UPLOAD_FOLDER, file.filename)
+    # 이미지 저장 (중복 방지를 위해 타임스탬프 추가)
+    import time
+    filename = f"{int(time.time())}_{file.filename}"
+    file_path = os.path.join(UPLOAD_FOLDER, filename)
     file.save(file_path)
     
     try:
